@@ -7,9 +7,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GAR_LOCATION: your-region  # Replace with your GCP region
-  REPOSITORY: streamlit-app-repo
-  IMAGE: streamlit-app
+  GAR_LOCATION: us-central1-a  # Replace with your GCP region
+  REPOSITORY: agentlegal
+  IMAGE: gcr.io/agentlegal/agent-server
 
 jobs:
   build-and-deploy:
