@@ -1,0 +1,39 @@
+name: Deploy to GKE
+
+on:
+  push:
+    branches:
+      - main  # Change this if using another branch
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GAR_LOCATION: your-region  # Replace with your GCP region
+  REPOSITORY: streamlit-app-repo
+  IMAGE: streamlit-app
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Authenticate with Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Configure Docker for Artifact Registry
+      run: |
+        gcloud auth configure-docker ${GAR_LOCATION}-docker.pkg.dev
+
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE}:latest .
+        docker push ${GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE}:latest
+
+    - name: Deploy to GKE
+      run: |
+        gcloud container clusters get-credentials YOUR_CLUSTER_NAME --region=${GAR_LOCATION}
+        kubectl set image deployment/streamlit-app streamlit-app=${GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE}:latest
