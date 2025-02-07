@@ -123,7 +123,7 @@ else:
         """, unsafe_allow_html=True
     )
 
-st.sidebar.title("Legal Assistant Chatbot")
+st.sidebar.title("Legal Assistant Chat")
 st.sidebar.write("Ask legal questions, and the chatbot will provide answers based on Indian legal knowledge.")
 st.sidebar.header("📊 AI Insights Dashboard")
 
