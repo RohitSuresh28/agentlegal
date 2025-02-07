@@ -37,3 +37,6 @@ jobs:
       run: |
         gcloud container clusters get-credentials YOUR_CLUSTER_NAME --region=${GAR_LOCATION}
         kubectl set image deployment/streamlit-app streamlit-app=${GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE}:latest
+
+
+
